@@ -11,8 +11,14 @@ module.exports = {
 
     theme: {
         extend: {
+            colors:{
+                'pinif-1' : '#E97777',
+                'pinif-2' : '#FF9F9F',
+                'pinif-3' : '#FCDDB0',
+            },
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                freehand: ['Freehand'],
             },
         },
     },
