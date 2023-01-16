@@ -19,7 +19,7 @@ export default function Authenticated({ auth, header, children }) {
                     <div className='mt-10 flex flex-col mb-10 overflow-y-auto overflow-hidden'>
                         <NavLink 
                             openSide={showSideNav}
-                            href={route('dashboard')} 
+                            href={route('product')} 
                             active={route().current('dashboard')}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 
@@ -34,7 +34,7 @@ export default function Authenticated({ auth, header, children }) {
                         </NavLink>
                         <NavLink 
                             openSide={showSideNav}
-                            href={route('dashboard')} 
+                            href={route('product')} 
                             active={route().current('finance')}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 
@@ -50,7 +50,7 @@ export default function Authenticated({ auth, header, children }) {
                         </NavLink>
                         <NavLink 
                             openSide={showSideNav}
-                            href={route('dashboard')} 
+                            href={route('product')} 
                             active={route().current('product')}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 
@@ -66,7 +66,7 @@ export default function Authenticated({ auth, header, children }) {
                         </NavLink>
                         <NavLink 
                             openSide={showSideNav}
-                            href={route('dashboard')} 
+                            href={route('category')} 
                             active={route().current('category')}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 
@@ -82,7 +82,7 @@ export default function Authenticated({ auth, header, children }) {
                         </NavLink>
                         <NavLink 
                             openSide={showSideNav}
-                            href={route('dashboard')} 
+                            href={route('product')} 
                             active={route().current('supplier')}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 
@@ -98,7 +98,7 @@ export default function Authenticated({ auth, header, children }) {
                         </NavLink>
                         <NavLink 
                             openSide={showSideNav}
-                            href={route('dashboard')} 
+                            href={route('product')} 
                             active={route().current('invoice')}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 
