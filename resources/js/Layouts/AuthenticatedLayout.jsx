@@ -82,7 +82,7 @@ export default function Authenticated({ auth, header, children }) {
                         </NavLink>
                         <NavLink 
                             openSide={showSideNav}
-                            href={route('product')} 
+                            href={route('supplier')} 
                             active={route().current('supplier')}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 

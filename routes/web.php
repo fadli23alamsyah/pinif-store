@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,6 +22,14 @@ use Inertia\Inertia;
 Route::get('/', fn() => Inertia::render('Auth/Login'))->middleware('guest');
 
 Route::middleware('auth')->group(function () {
+    // Supplier
+    Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
+    Route::post('/supplier', [SupplierController::class, 'store'])->name('supplier.store');
+    Route::put('/supplier', [SupplierController::class, 'update'])->name('supplier.update');
+    Route::delete('/supplier', [SupplierController::class, 'destroy'])->name('supplier.destroy');
+    Route::get('/supplier/add', [SupplierController::class, 'add'])->name('supplier.add');
+    Route::get('/supplier/edit/{supplier}', [SupplierController::class, 'edit'])->name('supplier.edit');
+
     // Product
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::post('/product', [ProductController::class, 'store'])->name('product.store');

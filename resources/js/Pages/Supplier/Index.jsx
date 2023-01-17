@@ -2,10 +2,10 @@ import Datatables from '@/Components/Datatables';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/inertia-react';
 import PrimaryButton from '@/Components/PrimaryButton';
-import IconEditButton from '@/Components/IconEditButton';
-import IconDeleteButton from '@/Components/IconDeleteButton';
 import { useEffect, useState } from 'react';
-import { formatRupiah, ucWord } from '@/Utils/utilstext';
+import { ucWord } from '@/Utils/utilstext';
+import IconDeleteButton from '@/Components/IconDeleteButton';
+import IconEditButton from '@/Components/IconEditButton';
 import Modal from '@/Components/Modal';
 import DangerButton from '@/Components/DangerButton';
 import { Inertia } from '@inertiajs/inertia';
@@ -13,7 +13,7 @@ import { Inertia } from '@inertiajs/inertia';
 export default function Index(props) {
     const [showDelete, setShowDelete] = useState(false)
     const [message, setMessage] = useState(props.flash.message)
-    const [product, setProduct] = useState({})
+    const [supplier, setSupplier] = useState({})
 
     useEffect(()=>{
         setTimeout(()=>{
@@ -23,31 +23,31 @@ export default function Index(props) {
         }, 1500)
     },[])
 
-    const showModalDelete = (product) => {
+    const showModalDelete = (supplier) => {
         setShowDelete(true)
-        setProduct(product)
+        setSupplier(supplier)
     }
     
     const closeModalDelete = () => {
         setShowDelete(false)
-        setProduct({})
+        setSupplier({})
     }
 
     const destroy = () => {
-        Inertia.visit(route('product.destroy'),{
+        Inertia.visit(route('supplier.destroy'),{
             method: 'delete',
-            data: product
+            data: supplier
         })
-        setProduct({})
+        setSupplier({})
     }
 
     return (
         <AuthenticatedLayout
             auth={props.auth}
             errors={props.errors}
-            header={<h2 className="font-semibold text-xl text-white leading-tight">Daftar Produk</h2>}
+            header={<h2 className="font-semibold text-xl text-white leading-tight">Daftar Supplier</h2>}
         >
-            <Head title="Daftar Produk" />
+            <Head title="Daftar Supplier" />
 
             <div className="py-6 px-6">
                 {message && (
@@ -57,18 +57,15 @@ export default function Index(props) {
                     <PrimaryButton
                         type='button'
                         className='mb-10 float-right'
-                        onClick={ () => window.location.href = route('product.add')}
+                        onClick={ () => window.location.href = route('supplier.add')}
                     >Tambah</PrimaryButton>
                     <Datatables>
                         <thead className='bg-pinif-2 text-white'>
                             <tr>
                                 <th>No</th>
                                 <th>Nama</th>
-                                <th>Harga Jual</th>
-                                <th>Kategori</th>
-                                <th>Stok</th>
-                                <th>Gambar</th>
-                                <th>Keterangan</th>
+                                <th>Alamat</th>
+                                <th>No. Hp</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -77,20 +74,11 @@ export default function Index(props) {
                                 <tr key={i}>
                                     <td>{i+1}</td>
                                     <td>{ucWord(item.name)}</td>
-                                    <td className='text-right pr-7'>{formatRupiah(item.price)}</td>
-                                    <td>{ucWord(item.category.name)}</td>
-                                    <td>{formatRupiah(item.stock)}</td>
-                                    <td>
-                                        {item.image 
-                                            ? <img className='w-20' src={window.location.origin+'/images/'+ item.image} alt={'Gambar ' + item.name} /> 
-                                            : '-'
-                                        }
-                                        
-                                    </td>
-                                    <td>{ucWord(item.additional)}</td>
+                                    <td>{ucWord(item.address)}</td>
+                                    <td>{ucWord(item.phone)}</td>
                                     <td>
                                         <div className='flex flex-wrap gap-2'>
-                                            <IconEditButton onClick={() => window.location.href = route('product.edit',item)} />
+                                            <IconEditButton onClick={() => window.location.href = route('supplier.edit',item)} />
                                             <IconDeleteButton onClick={() => showModalDelete(item)} />
                                         </div>
                                     </td>
@@ -100,13 +88,12 @@ export default function Index(props) {
                     </Datatables>
                 </div>
             </div>
-
             
             {/* Modal Delete */}
             <Modal show={showDelete} maxWidth="md" onClose={closeModalDelete}>
                 <div className="p-4">
                     <h3 className="text-center text-xl font-bold">Hapus Data</h3>
-                    <div className="mt-4">Apakah anda yakin ingin menghapus data {product.name !== undefined ? product.name : ''}</div>
+                    <div className="mt-4">Apakah anda yakin ingin menghapus data {supplier.name !== undefined ? supplier.name : ''}</div>
                     <div className="mt-5 mb-3 float-right">
                         <DangerButton type="button" onClick={closeModalDelete}>
                             Tutup
@@ -117,7 +104,7 @@ export default function Index(props) {
                     </div>
                 </div>
             </Modal>
-
+            
         </AuthenticatedLayout>
     );
 }
