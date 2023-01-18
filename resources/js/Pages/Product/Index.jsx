@@ -36,9 +36,9 @@ export default function Index(props) {
     const destroy = () => {
         Inertia.visit(route('product.destroy'),{
             method: 'delete',
-            data: product
+            data: product,
+            onFinish: () => setProduct({}),
         })
-        setProduct({})
     }
 
     return (
