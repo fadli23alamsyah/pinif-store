@@ -32,7 +32,7 @@ export default function Authenticated({ auth, header, children }) {
                         >
                         Dashboard
                         </NavLink>
-                        <NavLink 
+                        {/* <NavLink 
                             openSide={showSideNav}
                             href={route('product')} 
                             active={route().current('finance')}
@@ -47,11 +47,11 @@ export default function Authenticated({ auth, header, children }) {
                             }
                         >
                         Keuangan
-                        </NavLink>
+                        </NavLink> */}
                         <NavLink 
                             openSide={showSideNav}
                             href={route('product')} 
-                            active={route().current('product')}
+                            active={route().current().split('.')[0] == 'product'}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 
                                     fill="none" viewBox="0 0 24 24" 
@@ -67,7 +67,7 @@ export default function Authenticated({ auth, header, children }) {
                         <NavLink 
                             openSide={showSideNav}
                             href={route('category')} 
-                            active={route().current('category')}
+                            active={route().current().split('.')[0] == 'category'}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 
                                     fill="none" viewBox="0 0 24 24" 
@@ -83,7 +83,7 @@ export default function Authenticated({ auth, header, children }) {
                         <NavLink 
                             openSide={showSideNav}
                             href={route('supplier')} 
-                            active={route().current('supplier')}
+                            active={route().current().split('.')[0] == 'supplier'}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 
                                     fill="none" viewBox="0 0 24 24" 
@@ -98,8 +98,8 @@ export default function Authenticated({ auth, header, children }) {
                         </NavLink>
                         <NavLink 
                             openSide={showSideNav}
-                            href={route('product')} 
-                            active={route().current('invoice')}
+                            href={route('invoice')} 
+                            active={route().current().split('.')[0] == 'invoice'}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 
                                     fill="none" viewBox="0 0 24 24" 

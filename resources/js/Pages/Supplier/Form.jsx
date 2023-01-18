@@ -77,7 +77,6 @@ export default function Form(props) {
                                 value={data.address}
                                 className="mt-1 block w-full"
                                 autoComplete="address"
-                                isFocused={true}
                                 handleChange={onHandleChange}
                                 required={true}
                             />
@@ -95,7 +94,6 @@ export default function Form(props) {
                                 value={data.phone}
                                 className="mt-1 block w-full"
                                 autoComplete="phone"
-                                isFocused={true}
                                 handleChange={onHandleChange}
                                 required={true}
                             />

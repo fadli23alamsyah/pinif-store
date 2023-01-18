@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SupplierController;
@@ -22,6 +23,14 @@ use Inertia\Inertia;
 Route::get('/', fn() => Inertia::render('Auth/Login'))->middleware('guest');
 
 Route::middleware('auth')->group(function () {
+    // Invoice
+    Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
+    Route::post('/invoice', [InvoiceController::class, 'store'])->name('invoice.store');
+    Route::put('/invoice', [InvoiceController::class, 'update'])->name('invoice.update');
+    Route::delete('/invoice', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
+    Route::get('/invoice/add/', [InvoiceController::class, 'add'])->name('invoice.add');
+    Route::get('/invoice/edit/{invoice}', [InvoiceController::class, 'edit'])->name('invoice.edit');
+
     // Supplier
     Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
     Route::post('/supplier', [SupplierController::class, 'store'])->name('supplier.store');
