@@ -26,6 +26,8 @@ Route::get('/', fn() => Inertia::render('Auth/Login'))->middleware('guest');
 Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/filter_cost', [DashboardController::class, 'filter_cost'])->name('dashboard.filterCost');
+    Route::get('/dashboard/filter_units', [DashboardController::class, 'filter_units'])->name('dashboard.filterUnits');
 
     // Invoice
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
