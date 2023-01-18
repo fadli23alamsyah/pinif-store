@@ -79,7 +79,15 @@ export default function Index(props) {
                                     <td>{ucWord(item.name)}</td>
                                     <td className='text-right pr-7'>{formatRupiah(item.price)}</td>
                                     <td>{ucWord(item.category.name)}</td>
-                                    <td>{formatRupiah(item.stock)}</td>
+                                    <td className='text-center'>
+                                        {formatRupiah(item.stock)}
+                                        {(item.stock != props.checkStock[item.id]) && (
+                                            <div className='block text-sm bg-pinif-2 rounded-full text-white'>
+                                                Sistem : {props.checkStock[item.id]}
+                                            </div>
+                                        )}
+                                        
+                                    </td>
                                     <td>
                                         {item.image 
                                             ? <img className='w-20' src={window.location.origin+'/images/'+ item.image} alt={'Gambar ' + item.name} /> 

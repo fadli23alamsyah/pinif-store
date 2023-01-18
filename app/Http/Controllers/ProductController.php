@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Invoice;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -11,8 +12,20 @@ use Inertia\Inertia;
 class ProductController extends Controller
 {
     public function index(){
-        $data = Product::orderBy('id','desc')->with('category')->get();
-        return Inertia::render('Product/Index', ["data" => $data]);
+        $data = Product::orderBy('id','desc')->with(['category'])->get();
+        $purchase = Invoice::whereNotNull('supplier_id')
+            ->join("transactions","transactions.invoice_id","=","invoices.id")
+            ->get(["transactions.product_id", "transactions.unit"])->groupBy("product_id");
+        $sale = Invoice::whereNotNull('customer_id')
+            ->join("transactions","transactions.invoice_id","=","invoices.id")
+            ->get(["transactions.product_id", "transactions.unit"])->groupBy("product_id");
+
+        $checkStock = [];
+        foreach($data as $product){
+            $checkStock[$product["id"]] = (isset($purchase[$product["id"]]) ? $purchase[$product["id"]]->sum("unit") : 0) 
+                                        - (isset($sale[$product["id"]]) ? $sale[$product["id"]]->sum("unit") : 0);
+        }
+        return Inertia::render('Product/Index', ["data" => $data , "checkStock" => $checkStock]);
     }
 
     public function add(){
