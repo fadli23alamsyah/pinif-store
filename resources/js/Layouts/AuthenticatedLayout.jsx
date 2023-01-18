@@ -19,7 +19,7 @@ export default function Authenticated({ auth, header, children }) {
                     <div className='mt-10 flex flex-col mb-10 overflow-y-auto overflow-hidden'>
                         <NavLink 
                             openSide={showSideNav}
-                            href={route('product')} 
+                            href={route('dashboard')} 
                             active={route().current('dashboard')}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" 

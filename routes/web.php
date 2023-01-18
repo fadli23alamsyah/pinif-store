@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -23,6 +24,9 @@ use Inertia\Inertia;
 Route::get('/', fn() => Inertia::render('Auth/Login'))->middleware('guest');
 
 Route::middleware('auth')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     // Invoice
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
     Route::post('/invoice', [InvoiceController::class, 'store'])->name('invoice.store');
