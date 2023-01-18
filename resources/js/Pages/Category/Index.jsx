@@ -36,9 +36,9 @@ export default function Index(props) {
     const destroy = () => {
         Inertia.visit(route('category.destroy'),{
             method: 'delete',
-            data: category
+            data: category,
+            onFinish: () => setCategory({}),
         })
-        setCategory({})
     }
 
     return (
