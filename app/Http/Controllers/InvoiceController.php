@@ -13,7 +13,7 @@ use Inertia\Inertia;
 class InvoiceController extends Controller
 {
     public function index(){
-        $data = Invoice::orderBy("created_at","desc")->with(["customer","supplier"])->get();
+        $data = Invoice::orderBy("date","desc")->with(["customer","supplier"])->get();
         return Inertia::render('Invoice/Index', ["data" => $data]);
     }
 
@@ -58,7 +58,7 @@ class InvoiceController extends Controller
         // }
 
         $data_invoice = [
-            "date" => date("Y-m-d"),
+            "date" => $request->validate(["date" => "required|date"])["date"],
             "total" => array_sum(array_column($transactions, 'total')),
         ];
 
@@ -126,7 +126,10 @@ class InvoiceController extends Controller
         }else{
             $data_invoice["supplier_id"] = $request->supplier_id;
         }
-        $data_invoice = ["total" => array_sum(array_column($transactions, 'total'))];
+        $data_invoice = [
+            "date" => $request->validate(["date" => "required|date"])["date"],
+            "total" => array_sum(array_column($transactions, 'total')),
+        ];
 
         $invoice = Invoice::find($request->id);
         if($request->op == 'customer') $invoice->customer->update($customer);

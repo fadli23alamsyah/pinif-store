@@ -20,6 +20,7 @@ export default function Form(props) {
         name: '',
         address: '',
         phone: '',
+        date: '',
         transactions: [{
             id: '',
             product_id: '',
@@ -28,10 +29,6 @@ export default function Form(props) {
             total: '',
         }],
     });
-
-    // useEffect(()=>{
-    //     console.log(errors.transactions.product_id)
-    // },[errors])
 
     useEffect(() => {
         setData("op", props.op);
@@ -53,6 +50,7 @@ export default function Form(props) {
                 name: props.invoice.customer?.name || '',
                 address: props.invoice.customer?.address || '',
                 phone: props.invoice.customer?.phone || '',
+                date: props.invoice.date || '',
                 transactions: allTransaction,
             });
         }
@@ -126,8 +124,26 @@ export default function Form(props) {
                 <div className="p-4 sm:p-8 bg-white shadow rounded-lg">
                     <form onSubmit={submit}>
                         {(data.op == 'customer')
-                            ? <>
-                                <div>
+                            ? <div className='flex flex-wrap'>
+                                <div className='w-full md:w-1/2 pr-0 md:pr-2'>
+                                    <InputLabel forInput="date" value="Tanggal Penjualan" />
+
+                                    <TextInput
+                                        id="date"
+                                        type="date"
+                                        name="date"
+                                        value={data.date}
+                                        className="mt-1 block w-full"
+                                        autoComplete="date"
+                                        isFocused={true}
+                                        handleChange={onHandleChange}
+                                        required={true}
+                                    />
+
+                                    <InputError message={errors.date} className="mt-2" />
+                                </div>
+
+                                <div className='mt-4 md:mt-0 w-full md:w-1/2 pl-0 md:pl-2'>
                                     <InputLabel forInput="name" value="Nama Pelanggan" />
 
                                     <TextInput
@@ -137,7 +153,6 @@ export default function Form(props) {
                                         value={data.name}
                                         className="mt-1 block w-full"
                                         autoComplete="name"
-                                        isFocused={true}
                                         handleChange={onHandleChange}
                                         required={true}
                                     />
@@ -145,7 +160,7 @@ export default function Form(props) {
                                     <InputError message={errors.name} className="mt-2" />
                                 </div>
 
-                                <div className='mt-4'>
+                                <div className='mt-4 w-full md:w-1/2 pr-0 md:pr-2'>
                                     <InputLabel forInput="address" value="Alamat" />
 
                                     <TextInput
@@ -162,7 +177,7 @@ export default function Form(props) {
                                     <InputError message={errors.address} className="mt-2" />
                                 </div>
 
-                                <div className='mt-4'>
+                                <div className='mt-4 w-full md:w-1/2 pl-0 md:pl-2'>
                                     <InputLabel forInput="phone" value="Telpon" />
 
                                     <TextInput
@@ -178,9 +193,27 @@ export default function Form(props) {
 
                                     <InputError message={errors.phone} className="mt-2" />
                                 </div>
-                            </>
-                            : <>
-                                <div className="mt-4">
+                            </div>
+                            : <div className='flex flex-wrap'>
+                                <div className='w-full md:w-1/2 pr-0 md:pr-2'>
+                                    <InputLabel forInput="date" value="Tanggal Penjualan" />
+
+                                    <TextInput
+                                        id="date"
+                                        type="date"
+                                        name="date"
+                                        value={data.date}
+                                        className="mt-1 block w-full"
+                                        autoComplete="date"
+                                        isFocused={true}
+                                        handleChange={onHandleChange}
+                                        required={true}
+                                    />
+
+                                    <InputError message={errors.date} className="mt-2" />
+                                </div>
+
+                                <div className='mt-4 md:mt-0 w-full md:w-1/2 pl-0 md:pl-2'>
                                     <InputLabel forInput="supplier" value="Supplier" />
 
                                     <select id='supplier' className="mt-1 block w-full border-gray-300 focus:border-pinif-2 focus:ring-pinif-2 rounded-md shadow-sm" name='supplier_id' value={data.supplier_id}
@@ -191,7 +224,7 @@ export default function Form(props) {
 
                                     <InputError message={errors.supplier_id} className="mt-2" />
                                 </div>
-                            </>
+                            </div>
                         }
 
                         {/* Input Transaction */}
