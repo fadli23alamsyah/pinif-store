@@ -8,7 +8,7 @@ export default function Authenticated({ auth, header, children }) {
     const [showSideNav, setShowSideNav] = useState(false);
 
     return (
-        <div className="max-h-screen flex bg-[#FFB9B9] box-border">
+        <div className="max-h-screen flex bg-[#FFB9B9] box-border overflow-hidden">
             <nav className="min-h-screen max-w-[250px]">
                 <div className="relative flex flex-col h-full">
                     <div className={`${showSideNav? 'mx-8' : 'mx-3'} mt-8 transition-all ease-in-out`}>
@@ -116,8 +116,8 @@ export default function Authenticated({ auth, header, children }) {
                 </div>
             </nav>
 
-            <main className='min-w-[200px] max-h-screen flex-1 sm:w-full py-1 pl-1'>
-                <div className='relative w-full h-full flex flex-col shadow-inner rounded-l-[35px] bg-pinif-2 overflow-x-hidden overflow-y-auto'>
+            <main className='relative min-w-[200px] max-h-screen flex-1 sm:w-full py-1 pl-1'>
+                <div className={`relative w-full h-full flex flex-col shadow-inner rounded-l-[35px] bg-pinif-2 overflow-hidden sm:overflow-y-auto ${!showSideNav && 'overflow-y-auto'}`}>
                 {showSideNav && <div className='absolute sm:hidden inset-0 rounded-l-[35px] z-40 bg-white/10 backdrop-blur-sm' onClick={() => setShowSideNav((previousState) => !previousState)}></div>}
 
                     <div className='flex justify-between items-center px-3 my-4 ml-6 py-3 rounded-l-full shadow-md bg-[#FFB9B9]'>
