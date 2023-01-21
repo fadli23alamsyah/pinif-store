@@ -20,6 +20,9 @@ module.exports = {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
                 freehand: ['Freehand'],
             },
+            gridTemplateColumns: {
+                'min-80px' :'repeat(5, minmax(80px, 1fr))',
+            },
         },
     },
 

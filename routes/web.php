@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -21,7 +22,8 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', fn() => Inertia::render('Auth/Login'))->middleware('guest');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/catalog', [HomeController::class, 'catalog'])->name('catalog');
 
 Route::middleware('auth')->group(function () {
     // Dashboard
