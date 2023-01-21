@@ -84,7 +84,7 @@ export default function Index(props){
                                     <p className='mt-3 text-pinif-1 text-base font-semibold'>Rp. {formatRupiah(item.product?.price || 0)}</p>
                                 </div>
                             </div>)
-                        : <p>Belum ada data</p>
+                        : <p>Belum ada produk</p>
                     }
                     {}
                 </div>
@@ -94,7 +94,7 @@ export default function Index(props){
             <section className='mx-8 lg:mx-28 mt-8 mb-20'>
                 <h3 className='font-extrabold tracking-widest text-2xl mb-4'>Produk Terbaru</h3>
                 <div className='flex flex-wrap justify-evenly gap-4'>
-                    {popularProducts.length != 0 
+                    {newProducts.length != 0 
                         ? newProducts.map((item,i) => 
                             <div key={i} className='bg-white border-2 w-[200px] border-pinif-1 rounded-md overflow-hidden hover:drop-shadow-[0_0_0.2rem_rgb(233,119,119)] cursor-pointer'>
                                 <div className='relative h-[200px] bg-pinif-1'>
@@ -109,7 +109,7 @@ export default function Index(props){
                                     <p className='mt-3 text-pinif-1 text-base font-semibold'>Rp. {formatRupiah(item.price)}</p>
                                 </div>
                             </div>)
-                        : <p>Belum ada data</p>
+                        : <p>Belum ada produk</p>
                     }
                 </div>
             </section>
