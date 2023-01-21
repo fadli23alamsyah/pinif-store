@@ -49,7 +49,7 @@ class ProductController extends Controller
 
         if($data){
             if($exist_image){
-                $filename = $request->name .'-'. date('dmYHis').'.'.$exist_image->getClientOriginalExtension();
+                $filename = str_replace(" ","_", $request->name .'-'. date('dmYHis').'.'.$exist_image->getClientOriginalExtension());
                 $exist_image->storeAs('images', $filename);
                 $data["image"] = $filename;
             };
@@ -86,7 +86,7 @@ class ProductController extends Controller
             $data["image"] = $product->image;
             if($exist_image){
                 Storage::delete('images/'.$product->image);
-                $filename = $request->name .'-'. date('dmYHis').'.'.$exist_image->getClientOriginalExtension();
+                $filename = str_replace(" ","_", $request->name .'-'. date('dmYHis').'.'.$exist_image->getClientOriginalExtension());
                 $exist_image->storeAs('images', $filename);
                 $data["image"] = $filename;
             };
