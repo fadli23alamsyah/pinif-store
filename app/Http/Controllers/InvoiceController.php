@@ -81,7 +81,10 @@ class InvoiceController extends Controller
             ];
         }
 
+        $productChange = array_column($data_transactions,'product_id');
+
         if(Transaction::insert($data_transactions)){
+            $this->_updateStock($productChange);
             return to_route('invoice')->with(["isSuccess" => true, "message" => "Berhasil ditambah"]);
         }else{
             return to_route('invoice')->with(["isSuccess" => false, "message" => "Gagal ditambah"]);
@@ -155,7 +158,13 @@ class InvoiceController extends Controller
         // Delete transaction
         $invoice->transactions()->whereIn('id', $old_transaction)->delete();
 
+        $productChange = array_merge(
+            array_column($transactions,'product_id'), 
+            array_column($invoice->transactions->toArray(), 'product_id')
+        );
+
         if($invoice->update($data_invoice)){
+            $this->_updateStock(array_unique($productChange));
             return to_route('invoice')->with(["isSuccess" => true, "message" => "Berhasil diupdate"]);
         }else{
             return to_route('invoice')->with(["isSuccess" => false, "message" => "Gagal diupdate"]);
@@ -164,15 +173,33 @@ class InvoiceController extends Controller
 
     public function destroy(Request $request){
         $invoice = Invoice::find($request->id);
+        $productChange = $invoice->transactions()->get('product_id')->mode("product_id");
         $invoice->transactions()->delete();
         $invoice->delete();
         if($invoice["customer_id"]){
             $invoice->customer->delete();
         }
         if($invoice){
+            $this->_updateStock(array_unique($productChange));
             return back()->with(["isSuccess" => true, "message" => "Berhasil dihapus"]);
         }else{
             return back()->with(["isSuccess" => false, "message" => "Gagal dihapus"]);
+        }
+    }
+
+    private function _updateStock(array $product_ids){
+        foreach($product_ids as $product_id){
+            $product = Product::find($product_id);
+            $purchase = Invoice::whereNotNull('supplier_id')->where('transactions.product_id', $product_id)
+                ->join("transactions","transactions.invoice_id","=","invoices.id")
+                ->get(["transactions.product_id", "transactions.unit"])->groupBy("product_id");
+            $sale = Invoice::whereNotNull('customer_id')->where('transactions.product_id', $product_id)
+                ->join("transactions","transactions.invoice_id","=","invoices.id")
+                ->get(["transactions.product_id", "transactions.unit"])->groupBy("product_id");
+
+            $stock = (isset($purchase[$product_id]) ? $purchase[$product_id]->sum("unit") : 0) 
+                                        - (isset($sale[$product_id]) ? $sale[$product_id]->sum("unit") : 0);
+            $product->update(["stock" => $stock]);
         }
     }
 }
