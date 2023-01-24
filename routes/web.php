@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -54,6 +55,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/product', [ProductController::class, 'destroy'])->name('product.destroy');
     Route::get('/product/add', [ProductController::class, 'add'])->name('product.add');
     Route::get('/product/edit/{product}', [ProductController::class, 'edit'])->name('product.edit');
+
+    // Brand
+    Route::get('/brand', [BrandController::class, 'index'])->name('brand');
+    Route::post('/brand', [BrandController::class, 'store'])->name('brand.store');
+    Route::put('/brand', [BrandController::class, 'update'])->name('brand.update');
+    Route::delete('/brand', [BrandController::class, 'destroy'])->name('brand.destroy');
+    Route::get('/brand/add', [BrandController::class, 'add'])->name('brand.add');
+    Route::get('/brand/edit/{brand}', [BrandController::class, 'edit'])->name('brand.edit');
 
     // Category
     Route::get('/category', [CategoryController::class, 'index'])->name('category');
