@@ -1,6 +1,6 @@
-export default function IconAddButton({className, type = 'button', onClick}){
+export default function IconAddButton({className, type = 'button', onClick , title = ''}){
     return (
-        <button className={`${className} bg-blue-500 p-2 text-white rounded-md hover:bg-blue-400`}
+        <button title={title} className={`${className} bg-blue-500 p-2 text-white rounded-md hover:bg-blue-400`}
             type={type}
             onClick={onClick}
             >

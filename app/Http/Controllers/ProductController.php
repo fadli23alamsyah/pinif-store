@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\Product;
@@ -29,8 +30,9 @@ class ProductController extends Controller
     }
 
     public function add(){
+        $brands = Brand::get();
         $categories = Category::get();
-        return Inertia::render('Product/Form', ["categories" => $categories]);
+        return Inertia::render('Product/Form', ["categories" => $categories, "brands" => $brands]);
     }
 
     public function store(Request $request){
@@ -41,6 +43,7 @@ class ProductController extends Controller
         
         $data = $request->validate([
             "name" => "required",
+            "brand_id" => "required|numeric",
             "category_id" => "required|numeric",
             "price" => "required|numeric",
             "stock" => "required|numeric",
@@ -64,6 +67,7 @@ class ProductController extends Controller
         return Inertia::render('Product/Form',[
             "product" => $product,
             "categories" => Category::get(),
+            "brands" => Brand::get(),
         ]);
     }
 

@@ -13,6 +13,7 @@ export default function Form(props) {
     const { data, setData, post, put, errors, processing } = useForm({
         id: '',
         name: '',
+        brand_id: '',
         category_id: '',
         price: '',
         stock: '',
@@ -25,6 +26,7 @@ export default function Form(props) {
             setData({
                 id: props.product.id,
                 name: props.product.name,
+                brand_id: props.product.brand_id,
                 category_id: props.product.category_id,
                 price: props.product.price,
                 stock: props.product.stock,
@@ -77,6 +79,18 @@ export default function Form(props) {
                             />
 
                             <InputError message={errors.name} className="mt-2" />
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel forInput="brand" value="Merek" />
+
+                            <select id='brand' className="mt-1 block w-full border-gray-300 focus:border-pinif-2 focus:ring-pinif-2 rounded-md shadow-sm"
+                            name='brand_id' onChange={onHandleChange}>
+                                <option value="">Pilih Merek</option>
+                                {props.brands.map((item, i)=> <option key={i} value={item.id} selected={item.id == data.brand_id ? 'selected' : null}>{ucWord(item.name)}</option> )}
+                            </select>
+
+                            <InputError message={errors.brand_id} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
