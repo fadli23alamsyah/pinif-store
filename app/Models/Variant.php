@@ -11,7 +11,7 @@ class Variant extends Model
 
     protected $guarded = ['id'];
 
-    public function productOption(){
-        return $this->belongsToMany(ProductOption::class, 'product_variant');
+    public function products(){
+        return $this->hasMany(Product::class);
     }
 }

@@ -23,7 +23,7 @@ class Product extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    public function productOptions(){
-        return $this->hasMany(ProductOption::class);
+    public function variant(){
+        return $this->belongsTo(Variant::class);
     }
 }

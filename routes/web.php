@@ -8,6 +8,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\VariantController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -71,6 +72,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/category', [CategoryController::class, 'destroy'])->name('category.destroy');
     Route::get('/category/add', [CategoryController::class, 'add'])->name('category.add');
     Route::get('/category/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
+
+    // Variant
+    Route::get('/variant', [VariantController::class, 'index'])->name('variant');
+    Route::post('/variant', [VariantController::class, 'store'])->name('variant.store');
+    Route::put('/variant', [VariantController::class, 'update'])->name('variant.update');
+    Route::delete('/variant', [VariantController::class, 'destroy'])->name('variant.destroy');
+    Route::get('/variant/add', [VariantController::class, 'add'])->name('variant.add');
+    Route::get('/variant/edit/{variant}', [VariantController::class, 'edit'])->name('variant.edit');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
