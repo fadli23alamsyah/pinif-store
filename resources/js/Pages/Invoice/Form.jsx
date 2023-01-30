@@ -247,7 +247,7 @@ export default function Form(props) {
                                                 <option value="">Pilih Produk</option> 
                                                 {props.products.map((item, i)=> {
                                                     if(data.transactions.some((trans) => trans.product_id == item.id) && item.id != data.transactions[index].product_id) return false
-                                                    return <option key={i} value={item.id}>{ucWord(item.name)}</option>
+                                                    return <option key={i} value={item.id}>{(item.variant_id ? ucWord(item.variant.name) + ' - ' : '') + ucWord(item.name)}</option>
                                                 })}
                                             </select>
 

@@ -22,7 +22,7 @@ class InvoiceController extends Controller
             return to_route('invoice')->with(["isSuccess" => false, "message" => "Terdapat kesalahan !!"]);
         }
         $suppliers = Supplier::get();
-        $products = Product::get();
+        $products = Product::with(["variant"])->get();
         return Inertia::render('Invoice/Form',[
             "op" => $request->op, 
             "suppliers" => $suppliers, 
@@ -94,7 +94,7 @@ class InvoiceController extends Controller
     public function edit(Invoice $invoice){
         $op = ($invoice->supplier_id != null)? 'supplier' : 'customer';
         $suppliers = Supplier::get();
-        $products = Product::get();
+        $products = Product::with(["variant"])->get();
         $invoice = Invoice::where('id',$invoice->id)->with(["transactions","supplier","customer"])->first();
         return Inertia::render('Invoice/Form',[
             "op" => $op, 
