@@ -76,7 +76,7 @@ export default function Index(props) {
                             {props.data.map((item, i) => 
                                 <tr key={i}>
                                     <td>{i+1}</td>
-                                    <td>{ucWord(item.name)}</td>
+                                    <td>{(item.variant ? ucWord(item.variant.name) + ' - '  : '') + ucWord(item.name)}</td>
                                     <td className='text-right pr-7'>{formatRupiah(item.price)}</td>
                                     <td>{ucWord(item.category.name)}</td>
                                     <td className='text-center'>

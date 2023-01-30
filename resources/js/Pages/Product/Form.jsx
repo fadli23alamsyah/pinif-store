@@ -15,6 +15,7 @@ export default function Form(props) {
         name: '',
         brand_id: '',
         category_id: '',
+        variant_id: '',
         price: '',
         stock: '',
         additional: '',
@@ -28,6 +29,7 @@ export default function Form(props) {
                 name: props.product.name,
                 brand_id: props.product.brand_id,
                 category_id: props.product.category_id,
+                variant_id: props.product.variant_id ?? '',
                 price: props.product.price,
                 stock: props.product.stock,
                 additional: props.product.additional,
@@ -85,9 +87,11 @@ export default function Form(props) {
                             <InputLabel forInput="brand" value="Merek" />
 
                             <select id='brand' className="mt-1 block w-full border-gray-300 focus:border-pinif-2 focus:ring-pinif-2 rounded-md shadow-sm"
-                            name='brand_id' onChange={onHandleChange}>
+                            name='brand_id' onChange={onHandleChange} value={data.brand_id}>
                                 <option value="">Pilih Merek</option>
-                                {props.brands.map((item, i)=> <option key={i} value={item.id} selected={item.id == data.brand_id ? 'selected' : null}>{ucWord(item.name)}</option> )}
+                                {props.brands.map((item, i) => 
+                                    <option key={i} value={item.id}>{ucWord(item.name)}</option> 
+                                )}
                             </select>
 
                             <InputError message={errors.brand_id} className="mt-2" />
@@ -97,12 +101,28 @@ export default function Form(props) {
                             <InputLabel forInput="category" value="Kategori" />
 
                             <select id='category' className="mt-1 block w-full border-gray-300 focus:border-pinif-2 focus:ring-pinif-2 rounded-md shadow-sm"
-                            name='category_id' onChange={onHandleChange}>
+                            name='category_id' onChange={onHandleChange} value={data.category_id}>
                                 <option value="">Pilih Kategori</option>
-                                {props.categories.map((item, i)=> <option key={i} value={item.id} selected={item.id == data.category_id ? 'selected' : null}>{ucWord(item.name)}</option> )}
+                                {props.categories.map((item, i) => 
+                                    <option key={i} value={item.id}>{ucWord(item.name)}</option> 
+                                )}
                             </select>
 
                             <InputError message={errors.category_id} className="mt-2" />
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel forInput="variant" value="Varian" />
+
+                            <select id='variant' className="mt-1 block w-full border-gray-300 focus:border-pinif-2 focus:ring-pinif-2 rounded-md shadow-sm"
+                            name='variant_id' onChange={onHandleChange} value={data.variant_id}>
+                                <option value="">Pilih Varian</option>
+                                {props.variants.map((item, i) => 
+                                    <option key={i} value={item.id}>{ucWord(item.name)}</option> 
+                                )}
+                            </select>
+
+                            <InputError message={errors.variant_id} className="mt-2" />
                         </div>
 
                         <div className="mt-4">

@@ -1,16 +1,46 @@
 import HomeLayout from "@/Layouts/HomeLayout";
 import { formatRupiah, ucWord } from "@/Utils/utilstext";
 import { Head } from "@inertiajs/inertia-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Modal from "@/Components/Modal";
+import './../../../css/custom.css'
 
 export default function Index(props){
+    const productImagesWrap = useRef(null)
     const [popularProducts, setPopularProducts] = useState([{}]);
     const [newProducts, setNewProducts] = useState([]);
+    const [showModal, setShowModal] = useState(false)
+    const [product, setProduct] = useState({})
 
     useEffect(()=>{
         setPopularProducts(props.popular_products);
         setNewProducts(props.new_products);
     },[])
+
+    const showProduct = (product) => {
+        setProduct(product)
+        setShowModal((prev) => !prev)
+    }
+
+    const closeModal = () => {
+        setShowModal((prev) => !prev)
+    }
+
+    const prevButton = (event) => {
+        event.preventDefault()
+        productImagesWrap.current.scrollLeft -= productImagesWrap.current.clientWidth
+    }
+
+    const nextButton = (event) => {
+        event.preventDefault()
+        productImagesWrap.current.scrollLeft += productImagesWrap.current.clientWidth
+        // for(let i=0; i < productImagesWrap.current.childNodes.length; i++){
+        //     if(productImagesWrap.current.scrollLeft < productImagesWrap.current.childNodes[i].offsetLeft){
+        //         productImagesWrap.current.scrollLeft += productImagesWrap.current.childNodes[i].offsetLeft
+        //         break
+        //     }
+        // }
+    }
 
     return (
         <HomeLayout>
@@ -71,22 +101,26 @@ export default function Index(props){
                 <div className='flex flex-wrap justify-evenly gap-4'>
                     {popularProducts.length != 0 
                         ? popularProducts.map((item,i)=>
-                            <div key={i} className='bg-white border-2 w-[200px] border-pinif-1 rounded-md overflow-hidden hover:drop-shadow-[0_0_0.2rem_rgb(233,119,119)] cursor-pointer'>
-                                <div className='relative h-[200px] bg-pinif-1'>
-                                    <img src={window.location.origin+'/images/'+ item.product?.image} alt={'Gambar ' + item.product?.name} className='absolute w-full h-full inset-0 object-cover' />
+                            <div key={i} className='flex flex-col bg-white border-2 w-[200px] border-pinif-1 rounded-md overflow-hidden hover:drop-shadow-[0_0_0.2rem_rgb(233,119,119)] cursor-pointer'>
+                                <div className='relative flex h-[200px] bg-pinif-1'>
+                                    {item.product?.image 
+                                        ? <img src={window.location.origin+'/images/'+ item.product?.image} alt={'Gambar ' + item.product?.name} className='absolute w-full h-full inset-0 object-cover' />
+                                        : <p className='font-freehand font-semibold m-auto text-4xl text-pinif-1 drop-shadow-[0_0_0.2rem_rgb(233,119,119)]'>
+                                            Pinif Store
+                                        </p>
+                                    }
                                     <div className='absolute bottom-0 right-0 bg-teal-600 text-white text-sm px-[6px] py-[2px] rounded-tl-xl'>Sisa {item.product?.stock}</div>
                                 </div>
-                                <div className='p-1 flex flex-col'>
-                                    <h5 className='tracking-tight text-sm text-ellipsis overflow-hidden' 
+                                <div className='p-1 flex-grow flex-shrink-0 basis-auto flex flex-col'>
+                                    <h5 className='flex-grow flex-shrink-0 basis-auto tracking-tight text-sm text-ellipsis overflow-hidden' 
                                         style={{ display: '-webkit-box', lineClamp: '2', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical'}}>
-                                        {ucWord(item.product?.name)}
+                                        {(item.product?.variant ? ucWord(item.product?.variant.name) + ' - '  : '') + ucWord(item.product?.name)}
                                     </h5>
-                                    <p className='mt-3 text-pinif-1 text-base font-semibold'>Rp. {formatRupiah(item.product?.price || 0)}</p>
+                                    <p className='text-pinif-1 text-base font-semibold'>Rp. {formatRupiah(item.product?.price || 0)}</p>
                                 </div>
                             </div>)
                         : <p>Belum ada produk</p>
                     }
-                    {}
                 </div>
             </section>
 
@@ -96,17 +130,25 @@ export default function Index(props){
                 <div className='flex flex-wrap justify-evenly gap-4'>
                     {newProducts.length != 0 
                         ? newProducts.map((item,i) => 
-                            <div key={i} className='bg-white border-2 w-[200px] border-pinif-1 rounded-md overflow-hidden hover:drop-shadow-[0_0_0.2rem_rgb(233,119,119)] cursor-pointer'>
-                                <div className='relative h-[200px] bg-pinif-1'>
-                                    <img src={window.location.origin+'/images/'+ item.image} alt={'Gambar ' + item.name} className='absolute w-full h-full inset-0 object-cover' />
+                            <div key={i} 
+                                className='flex flex-col bg-white border-2 w-[200px] border-pinif-1 rounded-md overflow-hidden hover:drop-shadow-[0_0_0.2rem_rgb(233,119,119)] cursor-pointer'
+                                onClick={() => showProduct(item)}>
+                                <div className='relative flex h-[200px] bg-white'>
+                                    {item.images[0] 
+                                        ? <img src={window.location.origin+'/images/'+ item.images[0]} alt={'Gambar ' + item.name} className='absolute w-full h-full inset-0 object-cover' />
+                                        : <p className='font-freehand font-semibold m-auto text-4xl text-pinif-1 drop-shadow-[0_0_0.2rem_rgb(233,119,119)]'>
+                                            Pinif Store
+                                        </p>
+                                    }
                                     <div className='absolute bottom-0 right-0 bg-teal-600 text-white text-sm px-[6px] py-[2px] rounded-tl-xl'>Sisa {item.stock}</div>
                                 </div>
-                                <div className='p-1 flex flex-col'>
-                                    <h5 className='tracking-tight text-sm text-ellipsis overflow-hidden' 
+                                <div className='p-1 flex-grow flex-shrink-0 basis-auto flex flex-col'>
+                                    <h5 className='flex-grow flex-shrink-0 basis-auto tracking-tight text-sm text-ellipsis overflow-hidden' 
                                         style={{ display: '-webkit-box', lineClamp: '2', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical'}}>
                                         {ucWord(item.name)}
                                     </h5>
-                                    <p className='mt-3 text-pinif-1 text-base font-semibold'>Rp. {formatRupiah(item.price)}</p>
+                                    {item.variant_id != null && <p className="text-xs bg-orange-500 w-fit text-white px-2 rounded-full">Terdapat Varian</p>}
+                                    <p className='text-pinif-1 text-base font-semibold'>Rp. {formatRupiah(item.prices[0])}</p>
                                 </div>
                             </div>)
                         : <p>Belum ada produk</p>
@@ -124,6 +166,91 @@ export default function Index(props){
                     <a href={route('catalog', {filter: 'all'})} className='w-fit bg-white mx-auto mt-8 block text-xl font-semibold text-pinif-1 px-10 py-3 rounded-full hover:shadow-md hover:shadow-white/50'>Iya Mau</a>
                 </div>
             </section>
+
+            {/* Show Product */}
+            <Modal show={showModal} onClose={closeModal}>
+                <div className="p-4">
+                    <h3 className="font-bold text-center text-lg mb-3">{ucWord(product.name)}</h3>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                        {/* Images */}
+                        <div className="group relative sm:w-1/2 h-fit bg-pinif-1 rounded-lg cursor-pointer border-2 border-pinif-1">
+                            {product.images?.length > 1 && (
+                                <>
+                                    <button className="hidden z-10 absolute outline-0 left-4 top-0 bottom-0 md:flex items-center opacity-0 transition-all 
+                                        group-hover:opacity-100 group-hover:-left-2"
+                                        onClick={prevButton}>
+                                        <span className="bg-white border-2 border-pinif-1 rounded-full p-1 hover:bg-pinif-2">👈</span>
+                                    </button>
+                                    <button className="hidden z-10 absolute outline-0 right-4 bottom-0 top-0 md:flex items-center opacity-0 transition-all 
+                                        group-hover:opacity-100 group-hover:-right-2"
+                                        onClick={nextButton}>
+                                        <span className="bg-white border-2 border-pinif-1 rounded-full p-1 hover:bg-pinif-2">👉</span>
+                                    </button>
+                                </>
+                            )}
+
+                            <ul id="product-images" ref={productImagesWrap}
+                                className="relative flex bg-pinif-1 rounded-lg overflow-x-auto cursor-pointer border-2 border-pinif-1 scroll-smooth snap-x snap-mandatory">
+                                {product.images?.map((image, i) =>
+                                    <div key={i} className="relative min-w-full pt-[100%] snap-center">
+                                        <img
+                                            src={window.location.origin+'/images/'+ image} 
+                                            alt={'Gambar ' + product.name} 
+                                            className='absolute w-full h-full inset-0 object-cover' />
+                                    </div>
+                                )}
+                                {!product.images && (
+                                    <div className="relative min-w-full py-10 overflow-hidden">
+                                        <p className='font-freehand text-center font-semibold text-4xl text-pinif-1 drop-shadow-[0_0_0.1    rem_white]'>
+                                            Pinif Store
+                                        </p>
+                                    </div>
+                                )}
+                            </ul>
+                        </div>
+
+                        {/* Details */}
+                        <div className="flex flex-col sm:w-1/2">
+                            <h3 className="font-bold text-lg underline">Detail Produk</h3>
+                            <table width="100%" className="text-lg mb-3">
+                                <tbody>
+                                    <tr>
+                                        <td className="w-0">Harga</td>
+                                        <td className="w-0 px-2">:</td>
+                                        <td className="text-pinif-1 font-bold">Rp. {
+                                            product.prices && (formatRupiah(product.prices[0]) + (
+                                                product.prices.length > 1
+                                                    ? ' - ' + formatRupiah(product.prices[product.prices.length-1])
+                                                    : ''
+                                                ))
+                                        }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stok</td>
+                                        <td className="px-2">:</td>
+                                        <td className="text-pinif-1 font-bold">{formatRupiah(product.stock ?? 0)}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h3 className="font-bold text-lg underline mb-2">Varian Produk</h3>
+                            <div className="flex flex-wrap gap-2">
+                                {
+                                    product.variants?.length > 0 
+                                        ? product.variants.map((item, i) => (
+                                            <div key={i} className="bg-pinif-1 rounded-md p-2 text-white text-xs">
+                                                <p className="mb-1 text-sm">{item.name}</p>
+                                                <p>Sisa {formatRupiah(item.stock)}</p>
+                                                <p>Rp. {formatRupiah(item.price)}</p>
+                                            </div>
+                                        ))
+                                        : <p>Tidak ada varian</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </HomeLayout>
     )
 }

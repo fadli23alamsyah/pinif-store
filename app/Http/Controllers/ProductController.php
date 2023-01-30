@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\Product;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -13,7 +14,7 @@ use Inertia\Inertia;
 class ProductController extends Controller
 {
     public function index(){
-        $data = Product::orderBy('id','desc')->with(['category'])->get();
+        $data = Product::orderBy('id','desc')->with(['category','variant'])->get();
         $purchase = Invoice::whereNotNull('supplier_id')
             ->join("transactions","transactions.invoice_id","=","invoices.id")
             ->get(["transactions.product_id", "transactions.unit"])->groupBy("product_id");
@@ -32,7 +33,8 @@ class ProductController extends Controller
     public function add(){
         $brands = Brand::get();
         $categories = Category::get();
-        return Inertia::render('Product/Form', ["categories" => $categories, "brands" => $brands]);
+        $variants = Variant::get();
+        return Inertia::render('Product/Form', ["categories" => $categories, "brands" => $brands, "variants" => $variants]);
     }
 
     public function store(Request $request){
@@ -45,6 +47,7 @@ class ProductController extends Controller
             "name" => "required",
             "brand_id" => "required|numeric",
             "category_id" => "required|numeric",
+            "variant_id" => "nullable|numeric",
             "price" => "required|numeric",
             "stock" => "required|numeric",
             "additional" => "",
@@ -68,6 +71,7 @@ class ProductController extends Controller
             "product" => $product,
             "categories" => Category::get(),
             "brands" => Brand::get(),
+            "variants" => Variant::get(),
         ]);
     }
 
