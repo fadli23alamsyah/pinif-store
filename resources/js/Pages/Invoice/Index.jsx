@@ -69,6 +69,7 @@ export default function Index(props) {
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal</th>
+                                <th>Tipe</th>
                                 <th>Invoice</th>
                                 <th>Total</th>
                                 <th>Aksi</th>
@@ -79,8 +80,11 @@ export default function Index(props) {
                                 <tr key={i}>
                                     <td>{i+1}</td>
                                     <td>{new Date(item.date).toLocaleDateString('id-ID')}</td>
+                                    <td>{item.supplier_id? 'Supplier' : 'Pelanggan'}</td>
                                     <td>{item.supplier_id != null ? ucWord(item.supplier.name) : ucWord(item.customer.name)}</td>
-                                    <td>{formatRupiah(item.total)}</td>
+                                    <td className={item.supplier_id? 'text-red-600' : 'text-green-600'}>
+                                        Rp. {formatRupiah(item.total)}
+                                    </td>
                                     <td>
                                         <div className='flex flex-wrap gap-2'>
                                             <IconEditButton onClick={() => window.location.href = route('invoice.edit',item)} />
