@@ -16,7 +16,7 @@ export default function HomeLayout({ children }){
 
                     {/* Menu */}
                     <div id='main-menu' className='font-bold'>
-                        <a href={route('catalog', {filter: 'all'})} className='hover:text-pinif-1'>Katalog</a>
+                        <a href={route('catalog', {brand: 'all', category: 'all'})} className='hover:text-pinif-1'>Katalog</a>
                     </div>
                 </div>
             </header>

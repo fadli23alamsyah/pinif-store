@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Transaction;
@@ -21,65 +22,87 @@ class HomeController extends Controller
 
         $new_products = Product::orderBy("created_at","desc")->with(['variant'])->take(5)->get();
 
+        $productsFormat = self::_productsResponse($new_products);
+
+        return Inertia::render('Home/Index', ["popular_products" => $popular_products, "new_products" => $productsFormat]);
+    }
+
+    public function catalog(Request $request){
+        $brand = $request->brand;
+        $category = $request->category;
+        $categories = Category::all();
+        $brands = Brand::all();
+
+        $categories_id = ($category == '' || $category == 'all')? $categories->pluck('id')->toArray() : [$category];
+        $brands_id = ($brand == '' || $brand == 'all')? $brands->pluck('id')->toArray() : [$brand];
+
+        $products = Product::whereIn("category_id", $categories_id)->whereIn("brand_id", $brands_id)->get();
+
+        $productsFormat = self::_productsResponse($products);
+
+        return Inertia::render('Home/Catalog', ["categories" => $categories, "brands"=>$brands, "products"=>$productsFormat]);
+    }
+
+    private function _productsResponse($products){
         // format data response
-        $formatNewProduct = [];
-        for($i=0; $i < count($new_products); $i++){
+        $formatProduct = [];
+        for($i=0; $i < count($products); $i++){
             if($i == 0){ 
-                $formatNewProduct[] = [
-                    "name" => $new_products[$i]->variant?->name ?? $new_products[$i]->name,
-                    "category_id" => $new_products[$i]->category_id,
-                    "brand_id" => $new_products[$i]->brand_id,
-                    "variant_id" => $new_products[$i]->variant_id,
-                    "stock" => $new_products[$i]->stock,
-                    "prices" => [$new_products[$i]->price],
-                    "images" => [$new_products[$i]->image],
-                    "variants" => $new_products[$i]->variant ? [[
-                        "name" => $new_products[$i]->name,
-                        "stock" => $new_products[$i]->stock,
-                        "price" => $new_products[$i]->price,
+                $formatProduct[] = [
+                    "name" => $products[$i]->variant?->name ?? $products[$i]->name,
+                    "category_id" => $products[$i]->category_id,
+                    "brand_id" => $products[$i]->brand_id,
+                    "variant_id" => $products[$i]->variant_id,
+                    "stock" => $products[$i]->stock,
+                    "prices" => [$products[$i]->price],
+                    "images" => [$products[$i]->image],
+                    "variants" => $products[$i]->variant ? [[
+                        "name" => $products[$i]->name,
+                        "stock" => $products[$i]->stock,
+                        "price" => $products[$i]->price,
                     ]] : []
                 ];
 
                 continue;
-            }elseif($new_products[$i]->variant_id != null){
-                $key = array_search($new_products[$i]->variant_id, array_column($formatNewProduct, 'variant_id'));
+            }elseif($products[$i]->variant_id != null){
+                $key = array_search($products[$i]->variant_id, array_column($formatProduct, 'variant_id'));
                 if($key >= 0){
-                    $formatNewProduct[$key]["stock"] += $new_products[$i]->stock;
-                    !in_array($new_products[$i]->price, $formatNewProduct[$key]["prices"]) && $formatNewProduct[$key]["prices"][] = $new_products[$i]->price;
-                    !in_array($new_products[$i]->image, $formatNewProduct[$key]["images"]) && $formatNewProduct[$key]["images"][] = $new_products[$i]->image;
-                    $formatNewProduct[$key]["variants"][] = [
-                        "name" => $new_products[$i]->name,
-                        "stock" => $new_products[$i]->stock,
-                        "price" => $new_products[$i]->price,
+                    $formatProduct[$key]["stock"] += $products[$i]->stock;
+                    !in_array($products[$i]->price, $formatProduct[$key]["prices"]) && $formatProduct[$key]["prices"][] = $products[$i]->price;
+                    !in_array($products[$i]->image, $formatProduct[$key]["images"]) && $formatProduct[$key]["images"][] = $products[$i]->image;
+                    $formatProduct[$key]["variants"][] = [
+                        "name" => $products[$i]->name,
+                        "stock" => $products[$i]->stock,
+                        "price" => $products[$i]->price,
                     ];
-                    asort($formatNewProduct[$key]["prices"]);
+                    asort($formatProduct[$key]["prices"]);
                 }else{
-                    $formatNewProduct[] = [
-                        "name" => $new_products[$i]->variant->name,
-                        "category_id" => $new_products[$i]->category_id,
-                        "brand_id" => $new_products[$i]->brand_id,
-                        "variant_id" => $new_products[$i]->variant_id,
-                        "stock" => $new_products[$i]->stock,
-                        "prices" => [$new_products[$i]->price],
-                        "images" => [$new_products[$i]->image],
+                    $formatProduct[] = [
+                        "name" => $products[$i]->variant->name,
+                        "category_id" => $products[$i]->category_id,
+                        "brand_id" => $products[$i]->brand_id,
+                        "variant_id" => $products[$i]->variant_id,
+                        "stock" => $products[$i]->stock,
+                        "prices" => [$products[$i]->price],
+                        "images" => [$products[$i]->image],
                         "variants" => [[
-                            "name" => $new_products[$i]->name,
-                            "stock" => $new_products[$i]->stock,
-                            "price" => $new_products[$i]->price,
+                            "name" => $products[$i]->name,
+                            "stock" => $products[$i]->stock,
+                            "price" => $products[$i]->price,
                         ]] 
                     ];
                 }
 
                 continue;
             }else{
-                $formatNewProduct[] = [
-                    "name" => $new_products[$i]->name,
-                    "category_id" => $new_products[$i]->category_id,
-                    "brand_id" => $new_products[$i]->brand_id,
-                    "variant_id" => $new_products[$i]->variant_id,
-                    "stock" => $new_products[$i]->stock,
-                    "prices" => [$new_products[$i]->price],
-                    "images" => [$new_products[$i]->image],
+                $formatProduct[] = [
+                    "name" => $products[$i]->name,
+                    "category_id" => $products[$i]->category_id,
+                    "brand_id" => $products[$i]->brand_id,
+                    "variant_id" => $products[$i]->variant_id,
+                    "stock" => $products[$i]->stock,
+                    "prices" => [$products[$i]->price],
+                    "images" => [$products[$i]->image],
                     "variants" => [],
                 ];
 
@@ -87,19 +110,6 @@ class HomeController extends Controller
             }
         }
 
-        return Inertia::render('Home/Index', ["popular_products" => $popular_products, "new_products" => $formatNewProduct]);
-    }
-
-    public function catalog(Request $request){
-        $filter = $request->filter;
-        $categories = Category::all();
-        
-        if($filter == null || $filter == 'all'){
-            $products = Product::all();
-        }else{
-            $products = Product::where("category_id", $categories->where("name",$filter)->value("id"))->get();
-        }
-
-        return Inertia::render('Home/Catalog', ["categories" => $categories, "products"=>$products]);
+        return $formatProduct;
     }
 }

@@ -34,12 +34,6 @@ export default function Index(props){
     const nextButton = (event) => {
         event.preventDefault()
         productImagesWrap.current.scrollLeft += productImagesWrap.current.clientWidth
-        // for(let i=0; i < productImagesWrap.current.childNodes.length; i++){
-        //     if(productImagesWrap.current.scrollLeft < productImagesWrap.current.childNodes[i].offsetLeft){
-        //         productImagesWrap.current.scrollLeft += productImagesWrap.current.childNodes[i].offsetLeft
-        //         break
-        //     }
-        // }
     }
 
     return (
@@ -163,7 +157,7 @@ export default function Index(props){
                         Anda dapat melihat semua produk yang dijual oleh <span className='font-bold'>PINIF STORE </span> 
                         di sosial media, di marketplace, di sini juga bisa kalo kamu mau.
                     </p>
-                    <a href={route('catalog', {filter: 'all'})} className='w-fit bg-white mx-auto mt-8 block text-xl font-semibold text-pinif-1 px-10 py-3 rounded-full hover:shadow-md hover:shadow-white/50'>Iya Mau</a>
+                    <a href={route('catalog', {brand: 'all', category: 'all'})} className='w-fit bg-white mx-auto mt-8 block text-xl font-semibold text-pinif-1 px-10 py-3 rounded-full hover:shadow-md hover:shadow-white/50'>Iya Mau</a>
                 </div>
             </section>
 
