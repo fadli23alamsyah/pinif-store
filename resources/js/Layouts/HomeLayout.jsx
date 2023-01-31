@@ -40,7 +40,7 @@ export default function HomeLayout({ children }){
                     <p className='text-white font-bold'>Temukan Pinif Store 👉</p>
                     <div id="find-me" className='flex gap-3 items-center'>
                         <a href='https://goo.gl/maps/yARyHuTd2RUMner37' target='_blank' className='bg-white rounded-md p-1'>
-                            <img src="https://w7.pngwing.com/pngs/329/734/png-transparent-google-maps-location-zion-text-logo-sign.png" className='w-8 h-8' alt="instagram" />
+                            <img src="/assets/static_images/gmaps.png" className='w-8 h-8' alt="instagram" />
                         </a>
                         <a href='https://shopee.co.id/putriwdynr' target='_blank' className='bg-white rounded-md p-1'>
                             <img src="/assets/static_images/shopee.png" className='w-8 h-8' alt="instagram" />
