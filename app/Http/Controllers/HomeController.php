@@ -66,7 +66,7 @@ class HomeController extends Controller
                 continue;
             }elseif($products[$i]->variant_id != null){
                 $key = array_search($products[$i]->variant_id, array_column($formatProduct, 'variant_id'));
-                if($key >= 0){
+                if($key && $key >= 0){
                     $formatProduct[$key]["stock"] += $products[$i]->stock;
                     !in_array($products[$i]->price, $formatProduct[$key]["prices"]) && $formatProduct[$key]["prices"][] = $products[$i]->price;
                     !in_array($products[$i]->image, $formatProduct[$key]["images"]) && $formatProduct[$key]["images"][] = $products[$i]->image;
