@@ -47,9 +47,9 @@ class VariantController extends Controller
     }
 
     public function destroy(Request $request){
-        $variant = Variant::find($request->id);
-        $check = $variant->withExists(["products"])->first();
-        if($check->products_exists){
+        $variant = Variant::withExists(["products"])->find($request->id);
+        $check = $variant->products_exists;
+        if($check){
             return back()->with(["isSuccess" => false, "message" => "Gagal dihapus, Data masih terhubung dengan data lain"]);
         }
 

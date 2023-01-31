@@ -47,9 +47,9 @@ class CategoryController extends Controller
     }
 
     public function destroy(Request $request){
-        $category = Category::find($request->id);
-        $check = $category->withExists(["products"])->first();
-        if($check->products_exists){
+        $category = Category::withExists(["products"])->find($request->id);
+        $check = $category->products_exists;
+        if($check){
             return back()->with(["isSuccess" => false, "message" => "Gagal dihapus, Data masih terhubung dengan data lain"]);
         }
 

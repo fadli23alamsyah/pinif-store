@@ -47,9 +47,9 @@ class BrandController extends Controller
     }
 
     public function destroy(Request $request){
-        $brand = Brand::find($request->id);
-        $check = $brand->withExists(["products"])->first();
-        if($check->products_exists){
+        $brand = Brand::withExists(["products"])->find($request->id);
+        $check = $brand->products_exists;
+        if($check){
             return back()->with(["isSuccess" => false, "message" => "Gagal dihapus, Data masih terhubung dengan data lain"]);
         }
 

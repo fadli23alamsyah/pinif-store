@@ -50,9 +50,9 @@ class SupplierController extends Controller
     }
 
     public function destroy(Request $request){
-        $supplier = Supplier::find($request->id);
-        $check = $supplier->withExists(["invoices"])->first();
-        if($check->invoices_exists){
+        $supplier = Supplier::withExists(["invoices"])->find($request->id);
+        $check = $supplier->invoices_exists;
+        if($check){
             return back()->with(["isSuccess" => false, "message" => "Gagal dihapus, Data masih terhubung dengan data lain"]);
         }
 
