@@ -1,0 +1,6 @@
+####set in function to call once 
+##For link storage to public
+File::link(
+    // create link storage image to new path : example below
+    storage_path('app/public/images'), "/home/latansac/pinifstore/images"
+);
