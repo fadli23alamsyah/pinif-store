@@ -20,9 +20,9 @@ class HomeController extends Controller
             ->selectRaw("transactions.product_id, SUM(transactions.unit) as total_purchase")
             ->groupByRaw("transactions.product_id")->take(5)->get();
 
-        $new_products = Product::orderBy("created_at","desc")->with(['variant'])->take(5)->get();
+        $new_products = Product::orderBy("created_at","desc")->with(['variant'])->get();
 
-        $productsFormat = self::_productsResponse($new_products);
+        $productsFormat = self::_productsResponse($new_products, 5);
 
         return Inertia::render('Home/Index', ["popular_products" => $popular_products, "new_products" => $productsFormat]);
     }
@@ -43,10 +43,12 @@ class HomeController extends Controller
         return Inertia::render('Home/Catalog', ["categories" => $categories, "brands"=>$brands, "products"=>$productsFormat]);
     }
 
-    private function _productsResponse($products){
+    private function _productsResponse($products, int $max = null) : array {
         // format data response
         $formatProduct = [];
         for($i=0; $i < count($products); $i++){
+            if($max != null && $max == count($formatProduct)) break;
+
             if($i == 0){ 
                 $formatProduct[] = [
                     "name" => $products[$i]->variant?->name ?? $products[$i]->name,
@@ -66,6 +68,7 @@ class HomeController extends Controller
                 continue;
             }elseif($products[$i]->variant_id != null){
                 $key = array_search($products[$i]->variant_id, array_column($formatProduct, 'variant_id'));
+                $key = $key === false ? -1 : $key;
                 if($key && $key >= 0){
                     $formatProduct[$key]["stock"] += $products[$i]->stock;
                     !in_array($products[$i]->price, $formatProduct[$key]["prices"]) && $formatProduct[$key]["prices"][] = $products[$i]->price;
