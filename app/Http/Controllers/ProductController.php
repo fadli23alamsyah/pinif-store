@@ -106,9 +106,9 @@ class ProductController extends Controller
     }
 
     public function destroy(Request $request){
-        $product = Product::find($request->id);
-        $check = $product->withExists(["transactions"])->first();
-        if($check->transactions_exists){
+        $product = Product::withExists(["transactions"])->find($request->id);
+        $check = $product->transactions_exists;
+        if($check){
             return back()->with(["isSuccess" => false, "message" => "Gagal dihapus, Data masih terhubung dengan data lain"]);
         }
 
