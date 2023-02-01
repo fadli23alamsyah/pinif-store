@@ -193,7 +193,7 @@ export default function Index(props){
                                             className='absolute w-full h-full inset-0 object-cover' />
                                     </div>
                                 )}
-                                {!product.images && (
+                                {!product.images?.length && (
                                     <div className="relative min-w-full py-10 overflow-hidden">
                                         <p className='font-freehand text-center font-semibold text-4xl text-pinif-1 drop-shadow-[0_0_0.1rem_white]'>
                                             Pinif Store

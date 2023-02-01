@@ -57,7 +57,7 @@ class HomeController extends Controller
                     "variant_id" => $products[$i]->variant_id,
                     "stock" => $products[$i]->stock,
                     "prices" => [$products[$i]->price],
-                    "images" => [$products[$i]->image],
+                    "images" => $products[$i]->image ? [$products[$i]->image] : [],
                     "variants" => $products[$i]->variant ? [[
                         "name" => $products[$i]->name,
                         "stock" => $products[$i]->stock,
@@ -87,7 +87,7 @@ class HomeController extends Controller
                         "variant_id" => $products[$i]->variant_id,
                         "stock" => $products[$i]->stock,
                         "prices" => [$products[$i]->price],
-                        "images" => [$products[$i]->image],
+                        "images" => $products[$i]->image ? [$products[$i]->image] : [],
                         "variants" => [[
                             "name" => $products[$i]->name,
                             "stock" => $products[$i]->stock,
