@@ -72,7 +72,7 @@ class HomeController extends Controller
                 if($key >= 0){
                     $formatProduct[$key]["stock"] += $products[$i]->stock;
                     !in_array($products[$i]->price, $formatProduct[$key]["prices"]) && $formatProduct[$key]["prices"][] = $products[$i]->price;
-                    !in_array($products[$i]->image, $formatProduct[$key]["images"]) && $formatProduct[$key]["images"][] = $products[$i]->image;
+                    !in_array($products[$i]->image, $formatProduct[$key]["images"]) && $products[$i]->image && $formatProduct[$key]["images"][] = $products[$i]->image;
                     $formatProduct[$key]["variants"][] = [
                         "name" => $products[$i]->name,
                         "stock" => $products[$i]->stock,
@@ -105,7 +105,7 @@ class HomeController extends Controller
                     "variant_id" => $products[$i]->variant_id,
                     "stock" => $products[$i]->stock,
                     "prices" => [$products[$i]->price],
-                    "images" => [$products[$i]->image],
+                    "images" => $products[$i]->image ? [$products[$i]->image] : [],
                     "variants" => [],
                 ];
 
